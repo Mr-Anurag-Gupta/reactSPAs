@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class Welcome extends React.Component {
+class Welcome extends Component {
   render() {
     const {user} = this.props;
 
