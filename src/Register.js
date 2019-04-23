@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import FormError from './FormError';
+import firebase from './Firebase';
 
 class Register extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       displayName: '',
       email: '',
@@ -13,24 +14,48 @@ class Register extends Component {
     }
 
     this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleSubmit(e) {
+    var registrationInfo = {
+      displayName: this.state.displayName,
+      email: this.state.email,
+      password: this.state.passOne
+    }
+    e.preventDefault();
+    firebase
+      .auth()
+      .createUserWithEmailAndPassword(
+        registrationInfo.email,
+        registrationInfo.password
+    ).then( () => {
+      this.props.registerUser(registrationInfo.displayName);
+    })
+    .catch(error => {
+      if (error.message !== null) {
+        this.setState({ errorMessage: error.message });
+      } else {
+        this.setState({ errorMessage: null });
+      }
+    });
   }
 
   handleChange(e) {
-    const itemName = e.target.name;
-    const itemValue = e.target.value;
+    const { name, value } = e.target;
 
-    this.setState({ [itemName]: [itemValue] }, () => {
+    this.setState({ [name]: value }, () => {
       if (this.state.passOne !== this.state.passTwo) {
-        this.setState({ errorMessage: "Password do not match." })
+        this.setState({ errorMessage: 'Password do not match' })
       } else {
         this.setState({ errorMessage: null })
       }
-    })
+    });
   }
 
   render() {
     return (
-      <form className="mt-3">
+      <form className="mt-3" onSubmit={this.handleSubmit}>
         <div className="container">
           <div className="row justify-content-center">
             <div className="col-lg-8">
@@ -38,10 +63,11 @@ class Register extends Component {
                 <div className="card-body">
                   <h3 className="font-weight-light mb-3">Register</h3>
                   <div className="form-row">
-                    { this.state.errorMessage !== null ? (
-                      <FormError theMessage={this.state.errorMessage} />
-                    ) : null
-                    }
+                    {this.state.errorMessage !== null ? (
+                      <FormError 
+                        theMessage={this.state.errorMessage}
+                      />
+                    ) : null}
                     <section className="col-sm-12 form-group">
                       <label
                         className="form-control-label sr-only"
@@ -84,6 +110,7 @@ class Register extends Component {
                       <input
                         className="form-control"
                         type="password"
+                        required
                         name="passOne"
                         placeholder="Password"
                         value={this.state.passOne}
