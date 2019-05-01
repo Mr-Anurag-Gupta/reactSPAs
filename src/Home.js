@@ -4,7 +4,7 @@ import { Link } from '@reach/router';
 class Home extends Component {
   render() {
 
-    const {user} = this.props;
+    const { user } = this.props;
 
     const biggerLead = {
         fontSize: 1.4 + 'em',

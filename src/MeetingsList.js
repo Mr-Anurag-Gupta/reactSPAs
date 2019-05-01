@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import firebase from './Firebase';
-import { GoTrashcan } from 'react-icons/go'
+import { GoTrashcan, GoListUnordered } from 'react-icons/go'
 import { FaLink } from 'react-icons/fa';
 import { navigate } from '@reach/router';
 
 class MeetingsList extends Component {
-    constructor(props) {
-        super(props);
-    }
+    // constructor(props) {
+    //     super(props);
+    // }
 
     deleteMeeting = (e, whichMeeting) => {
         e.preventDefault();
@@ -36,10 +36,17 @@ class MeetingsList extends Component {
                     </button>
                     <button
                         className="btn btn-sm btn-outline-secondary"
-                        title="Delete Meeting"
+                        title="Link Meeting"
                         onClick={() => navigate(`checkin/${this.props.userID}/${item.meetingID}`)}
                     >
                         <FaLink />
+                    </button>
+                    <button
+                        className="btn btn-sm btn-outline-secondary"
+                        title="Attendees List"
+                        onClick={() => navigate(`attendees/${this.props.userID}/${item.meetingID}`)}
+                    >
+                        <GoListUnordered />
                     </button>
                 </section>
                 <section className="pl-3 text-left align-self-center">
