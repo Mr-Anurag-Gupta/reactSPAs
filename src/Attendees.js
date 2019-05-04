@@ -55,8 +55,7 @@ class Attendees extends Component {
   }
 
   chooseRandom = () => {
-    const randomAttendee = Math.floor
-      (Math.random() * this.state.allAttendees.length);
+    const randomAttendee = Math.floor(Math.random() * this.state.allAttendees.length);
     this.resetQuery();
     this.setState({
       displayAttendees: [this.state.allAttendees[randomAttendee]]
